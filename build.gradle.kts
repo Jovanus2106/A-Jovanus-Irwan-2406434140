@@ -36,12 +36,10 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.seleniumhq.selenium:selenium-java:$seleniumJavaVersion")
     testImplementation("io.github.bonigarcia:selenium-jupiter:$seleniumJupiterVersion")
-//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
-//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
-    //    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    // saya tidak menggunakan ini dikarenakan punya JUnit punya saya di-override manual dan
-    // selenium jupiter saya bentrok dengan JUnit Spring Boot saya.
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.github.bonigarcia:webdrivermanager:${webdrivermanagerVersion}")
 }
