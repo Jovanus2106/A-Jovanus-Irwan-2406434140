@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 @Service
 public class ProductServiceImpl implements ProductService{
     @Autowired
@@ -33,4 +34,11 @@ public class ProductServiceImpl implements ProductService{
     public Product update(Product product){
         return productRepository.update(product);
     }
+    public void deleteProductById(String id) {
+
+        productRepository.deleteById(id);
+    }
+
+
+
 }

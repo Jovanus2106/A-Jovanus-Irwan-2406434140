@@ -11,6 +11,8 @@ import id.ac.ui.cs.advprog.eshops.service.ProductService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.UUID;
+
 @Controller
 @RequestMapping("/product")
 public class ProductController {
@@ -22,6 +24,9 @@ public class ProductController {
         Product product = new Product();
         product.setProductId(java.util.UUID.randomUUID().toString());
         model.addAttribute("product", product);
+        Product product= new Product();
+        product.setProductId(UUID.randomUUID().toString());
+        model.addAttribute ("product",product);
         return "createProduct";
     }
 
@@ -49,5 +54,11 @@ public class ProductController {
         service.update(product);
         return "redirect:list";
     }
+    @PostMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable String id) {
+        service.deleteProductById(id);
+        return "redirect:/product/list";
+    }
+
 
 }
