@@ -11,6 +11,8 @@ import id.ac.ui.cs.advprog.eshops.service.ProductService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.UUID;
+
 @Controller
 @RequestMapping("/product")
 public class ProductController {
@@ -20,6 +22,7 @@ public class ProductController {
     @GetMapping ("/create")
     public String createProductPage(Model model){
         Product product= new Product();
+        product.setProductId(UUID.randomUUID().toString());
         model.addAttribute ("product",product);
         return "createProduct";
     }
@@ -34,4 +37,6 @@ public class ProductController {
         model.addAttribute ("products",allProducts);
         return "productList";
     }
+
+
 }
