@@ -65,4 +65,79 @@ class ProductRepositoryTest {
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(productIterator.hasNext());
     }
+    @Test
+    void testDeletebyId(){
+        Product product= new Product();
+        product.setProductId("123");
+        product.setProductName("Produk A");
+        product.setProductQuantity(10);
+        productRepository.create(product);
+        productRepository.deleteById("123");
+        Iterator<Product>iterator= productRepository.findAll();
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    void testUpdateProduct(){
+
+        Product product= new Product();
+        product.setProductId("123");
+        product.setProductName("Produk A");
+        product.setProductQuantity(10);
+        productRepository.create(product);
+
+        Product updated= new Product();
+        updated.setProductId("123");
+        updated.setProductQuantity(20);
+        updated.setProductName("Produk Baru");
+        Product result= productRepository.update(updated);
+
+        assertNotNull(result);
+        assertEquals("Produk Baru", result.getProductName());
+        assertEquals(20, result.getProductQuantity());
+    }
+    @Test
+    void testFindById(){
+        Product product = new Product();
+        product.setProductId("123");
+        product.setProductName("Produk A");
+        product.setProductQuantity(10);
+        productRepository.create(product);
+
+        Product found= productRepository.findById("123");
+        assertNotNull(found);
+        assertEquals("Produk A",product.getProductName());
+    }
+
+    @Test
+    void testFindByIdNotFound() {
+        Product product = new Product();
+        product.setProductId("id-ada");
+        product.setProductName("Produk Ada");
+        product.setProductQuantity(10);
+        productRepository.create(product);
+
+        Product result = productRepository.findById("id-tidak-ada");
+
+        assertNull(result);
+    }
+
+    @Test
+    void testUpdateProductNotFound() {
+        Product existingProduct = new Product();
+        existingProduct.setProductId("id-ada");
+        existingProduct.setProductName("Produk Lama");
+        existingProduct.setProductQuantity(10);
+        productRepository.create(existingProduct);
+
+        Product updatedProduct = new Product();
+        updatedProduct.setProductId("id-tidak-ada");
+        updatedProduct.setProductName("Produk Baru");
+        updatedProduct.setProductQuantity(20);
+
+        Product result = productRepository.update(updatedProduct);
+
+        assertNull(result);
+    }
+
 }
