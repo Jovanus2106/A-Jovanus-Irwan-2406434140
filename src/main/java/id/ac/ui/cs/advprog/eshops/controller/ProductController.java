@@ -24,9 +24,6 @@ public class ProductController {
         Product product= new Product();
         product.setProductId(UUID.randomUUID().toString());
         model.addAttribute ("product",product);
-        Product product = new Product();
-        product.setProductId(java.util.UUID.randomUUID().toString());
-        model.addAttribute("product", product);
         return "createProduct";
     }
 

@@ -11,7 +11,6 @@
   <h3>Create New Product</h3>
 
   <form th:action="@{/product/create}" th:object="${product}" method="post">
-    <input type="hidden" th:field="*{productId}">
     <input type="hidden" th:field="*{productId}" />
     <div class="form-group">
       <label for="nameInput">Name</label>
