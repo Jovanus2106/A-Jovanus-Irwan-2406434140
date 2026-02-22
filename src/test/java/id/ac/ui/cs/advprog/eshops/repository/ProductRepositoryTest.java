@@ -17,10 +17,6 @@ class ProductRepositoryTest {
     @InjectMocks
     ProductRepository productRepository;
 
-    @BeforeEach
-    void setUp() {
-        // memang sengaja kosong karena kalau repository lebih cepat langsung
-    }
 
     @Test
     void testCreateAndFind() {

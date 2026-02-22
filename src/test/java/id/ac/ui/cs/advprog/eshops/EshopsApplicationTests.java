@@ -6,9 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class EshopsApplicationTests {
 
-    @Test
-    void contextLoads() {
-        //kosoong karena tidak bisa di tes
-    }
 
+    @Test
+    void testMain() {
+        EshopsApplication.main(new String[] {});
+    }
 }
