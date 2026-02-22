@@ -1,6 +1,6 @@
 // penambahan unit test pada product service
 package id.ac.ui.cs.advprog.eshops.service;
-
+// udah 100 persen juga
 import id.ac.ui.cs.advprog.eshops.model.Product;
 import id.ac.ui.cs.advprog.eshops.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
