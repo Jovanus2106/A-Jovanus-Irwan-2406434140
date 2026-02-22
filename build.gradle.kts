@@ -80,9 +80,9 @@ sonar {
 
     properties {
 
-        property("sonar.projectKey", "a-jovanus-irwan-susanto-2406434140")
+        property("sonar.projectKey", "Jovanus2106_A-Jovanus-Irwan-2406434140")
 
-        property("sonar.organization", "a-jovanus-irwan-susanto-2406434140")
+        property("sonar.organization", "jovanus2106")
 
         property("sonar.host.url", "https://sonarcloud.io")
 
