@@ -24,7 +24,7 @@ public class ProductController {
         Product product= new Product();
         product.setProductId(UUID.randomUUID().toString());
         model.addAttribute ("product",product);
-        return "createProduct";
+        return "CreateProduct";
     }
 
     @PostMapping("/create")
@@ -36,7 +36,7 @@ public class ProductController {
     public String productListPage(Model model){
         List<Product>allProducts= service.findAll();
         model.addAttribute ("products",allProducts);
-        return "productList";
+        return "ProductList";
     }
     @PostMapping("/delete/{id}")
     public String deleteProduct(@PathVariable String id) {
