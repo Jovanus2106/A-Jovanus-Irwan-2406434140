@@ -19,6 +19,7 @@ class ProductRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        // memang sengaja kosong karena kalau repository lebih cepat langsung
     }
 
     @Test

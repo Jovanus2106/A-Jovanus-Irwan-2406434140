@@ -8,6 +8,7 @@ class EshopsApplicationTests {
 
     @Test
     void contextLoads() {
+        //kosoong karena tidak bisa di tes
     }
 
 }
