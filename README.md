@@ -1,3 +1,20 @@
+Modul 2 Refleksi:
+
+Selama pengerjaan latihan, beberapa masalah kualitas kode yang perlu saya perbaiki:
+
+-Inkompatibilitas Versi Gradle dan Plugin: Terjadi error getConvention() karena penggunaan Gradle 9.x atau versi Spring Boot yang tidak stabil dengan plugin SonarCloud lama. Strategi saya adalah melakukan downgrade Gradle ke versi stabil (8.10.2) dan memperbarui plugin org.sonarqube ke versi 5.x yang sudah mendukung internal API Gradle terbaru.
+
+-Kesalahan Konfigurasi Analisis Kualitas (SonarCloud): Analisis gagal karena ketidaksesuaian antara sonar.projectKey dan sonar.organization (masalah case-sensitivity dan mismatch nama). Strategi saya adalah menyinkronkan key di file build.gradle.kts agar identik dengan yang terdaftar di dasbor SonarCloud, serta memastikan penggunaan huruf kecil (lowercase) pada nama organisasi.
+
+-Laporan Coverage Unit Test: SonarCloud awalnya tidak bisa membaca hasil cakupan tes. Strategi saya adalah mengonfigurasi plugin Jacoco agar secara eksplisit menghasilkan laporan dalam format XML (xml.required.set(true)) dan mengarahkan properti sonar.coverage.jacoco.xmlReportPaths ke lokasi file tersebut agar data coverage dapat diunggah dan dianalisis.
+
+Implementasi saat ini sudah memenuhi definisi Continuous Integration (CI) dan Continuous Deployment (CD). Alur CI terpenuhi karena setiap kali ada perubahan kode yang di-push ke repositori GitHub, sistem secara otomatis menjalankan automated testing dan analisis statis menggunakan SonarCloud untuk memastikan tidak ada bug atau penurunan kualitas kode yang masuk ke main branch. Sementara itu, aspek CD terpenuhi melalui integrasi otomatis yang melakukan build image Docker dan melakukan deployment ke platform PaaS setelah semua tahap pengujian dan verifikasi dinyatakan berhasil. Dengan demikian, seluruh siklus dari penulisan kode hingga aplikasi dapat diakses oleh pengguna sudah berjalan secara otomatis tanpa memerlukan intervensi manual yang berulang.
+
+link deploy : 
+minor-raynell-a-jovanus-irwan-2406434140-69fce545.koyeb.app/
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Modul 1 Refleksi
 Refleksi 1 :
 Refleksi Implementasi Clean Code dan Secure Coding
 Pada modul ini, saya telah mengimplementasikan dua fitur baru menggunakan Spring Boot, yaitu fitur Create Product dan Edit/Delete Product. Setelah melakukan pengecekan ulang terhadap source code yang telah dibuat, berikut adalah refleksi saya terkait penerapan prinsip clean code dan secure coding practices, serta beberapa hal yang masih dapat diperbaiki.
