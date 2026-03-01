@@ -39,12 +39,9 @@ class ProductServiceImplTest {
     @Test
     void testCreateProduct() {
         when(productRepository.create(dummyProduct)).thenReturn(dummyProduct);
-
         Product savedProduct = productService.create(dummyProduct);
-
         assertNotNull(savedProduct);
         assertEquals(dummyProduct.getProductId(), savedProduct.getProductId());
-
         verify(productRepository, times(1)).create(dummyProduct);
     }
 
@@ -53,51 +50,38 @@ class ProductServiceImplTest {
         List<Product> productList = new ArrayList<>();
         productList.add(dummyProduct);
         Iterator<Product> iterator = productList.iterator();
-
         when(productRepository.findAll()).thenReturn(iterator);
-
         List<Product> allProducts = productService.findAll();
-
         assertFalse(allProducts.isEmpty());
         assertEquals(1, allProducts.size());
         assertEquals(dummyProduct.getProductName(), allProducts.get(0).getProductName());
-
         verify(productRepository, times(1)).findAll();
     }
 
     @Test
     void testDeleteProductById() {
         String idToDelete = dummyProduct.getProductId();
-
         productService.deleteProductById(idToDelete);
-
         verify(productRepository, times(1)).deleteById(idToDelete);
     }
 
     @Test
     void testFindById() {
         String targetId = dummyProduct.getProductId();
-
         when(productRepository.findById(targetId)).thenReturn(dummyProduct);
-
         Product foundProduct = productService.findById(targetId);
-
         assertNotNull(foundProduct);
         assertEquals(targetId, foundProduct.getProductId());
         assertEquals(dummyProduct.getProductName(), foundProduct.getProductName());
-
         verify(productRepository, times(1)).findById(targetId);
     }
 
     @Test
     void testUpdateProduct() {
         when(productRepository.update(dummyProduct)).thenReturn(dummyProduct);
-
         Product updatedProduct = productService.update(dummyProduct);
-
         assertNotNull(updatedProduct);
         assertEquals(dummyProduct.getProductId(), updatedProduct.getProductId());
-
         verify(productRepository, times(1)).update(dummyProduct);
     }
 }
