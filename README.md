@@ -1,3 +1,89 @@
+Modul 3 Refleksi:
+Implementasi prinsip SOLID: 
+
+1. Single Responsibility Principle (SRP)
+
+Sebelumnya, kelas CarController diimplementasikan di dalam file yang sama dengan ProductController.java (sebagai inner class). 
+Hal ini melanggar SRP karena satu file memiliki dua tanggung jawab yang berbeda yaitu menangani rute untuk product dan menangani rute untuk Car. 
+Oleh karena itu, saya telah mengubahnya dengan memisahkan CarController ke dalam filenya sendiri (CarController.java). 
+Dengan pemisahan ini, ProductController hanya memiliki satu alasan untuk berubah (yaitu jika ada perubahan logika pada produk), dan CarController hanya berurusan dengan logika mobil.
+
+2. Open-Closed Principle (OCP)
+
+Saya telah mengimplementasikan OCP melalui penggunaan interface pada lapisan Service, yaitu ProductService dan CarService. 
+Arsitektur ini memungkinkan sistem untuk terbuka terhadap perluasan (open for extension) namun tertutup dari modifikasi (closed for modification). 
+contoh: Jika suatu saat nanti saya perlu menambahkan tipe mobil baru (misalnya ElectricCarServiceImpl), 
+saya cukup membuat kelas baru yang mengimplementasikan interface CarService tanpa perlu memodifikasi atau merusak kode pada interface itu sendiri ataupun pada CarController.
+
+3. Liskov Substitution Principle (LSP)
+
+Sebelumnya, kode saya melanggar LSP karena CarController melakukan pewarisan (extends) dari ProductController. 
+Padahal secara konsep, CarController bukanlah sebuah ProductController, dan fungsi-fungsi rutenya sangat berbeda. 
+Jika instance ProductController diganti (disubstitusi) secara paksa oleh CarController, jalannya program (terutama mapping routing) akan menjadi salah. 
+Oleh karena itu, saya telah memperbaikinya dengan menghapus  extends ProductController pada CarController, sehingga CarController kini berdiri sendiri sebagai 
+entitas Controller yang independen.
+
+4. Interface Segregation Principle (ISP)
+
+Saya telah mengimplementasikan ISP di dalam sistem ini. Alih-alih membuat satu interface raksasa yang menggabungkan seluruh method untuk produk dan mobil , 
+saya memisahnya menjadi interface yang lebih kecil dan spesifik yaitu ProductService hanya berisi keterikatan untuk produk, dan CarService khusus untuk mobil. 
+Dengan demikian, ProductController tidak dipaksa untuk mengimplementasikan atau bergantung pada method yang sama sekali tidak relevan dengannya seperti updateCar().
+
+5. Dependency Inversion Principle (DIP)
+
+ Sebelumnya, kode saya melanggar DIP karena modul tingkat tinggi (CarController) bergantung langsung pada modul tingkat rendah berupa kelas konkret (CarServiceImpl), 
+ dibuktikan dengan deklarasi @Autowired private CarServiceImpl carservice;. Saya telah memperbaiki kode tersebut dengan mengganti referensinya menjadi antarmuka/abstraksinya: 
+ @Autowired private CarService carService; dengan cara ini, Controller tidak lagi terikat pada implementasi detail, melainkan bergantung pada abstraksi.
+
+
+Refleksi: 
+
+1) Dalam project ini, saya telah menerapkan kelima prinsip SOLID:
+
+-Single Responsibility Principle (SRP) 
+Saya memisahkan CarController dari ProductController. Sebelumnya, CarController menumpang di dalam file yang sama dan menangani 
+dua entitas yang berbeda. Sekarang, ProductController hanya bertanggung jawab atas alur logika Produk, dan CarController khusus untuk Mobil.
+
+-Open-Closed Principle (OCP)
+Saya menggunakan antarmuka (interface) seperti CarService. Struktur ini memungkinkan penambahan fungsionalitas baru (misalnya membuat kelas ElectricCarServiceImpl di masa depan) 
+tanpa perlu memodifikasi kode antarmuka maupun Controller yang sudah ada.
+
+-Liskov Substitution Principle (LSP) 
+Saya menghapus relasi pewarisan (extends ProductController) pada CarController. Sebelumnya, karena CarController mewarisi ProductController, 
+hal ini melarang hierarki karena entitas rute mobil bukanlah sebuah produk. Kini CarController berdiri sebagai entitas mandiri.
+
+-Interface Segregation Principle (ISP)
+Antarmuka dipisahkan secara spesifik. Operasi produk diatur dalam ProductService dan operasi mobil dalam CarService. 
+Hal ini memastikan klien tidak dipaksa untuk bergantung pada method yang tidak mereka gunakan (misalnya ProductController tidak perlu tahu soal fungsi updateCar).
+
+Dependency Inversion Principle (DIP) 
+Pada Controller, saya mengubah dependensi dari kelas konkret (implementasi) menjadi abstraksinya. 
+Contohnya, @Autowired private CarServiceImpl carservice; diubah menjadi @Autowired private CarService carService;.
+
+2) Explain the advantages of applying SOLID principles to your project with examples.
+
+Menerapkan prinsip SOLID membuat perangkat lunak jauh lebih mudah dipelihara (maintainable), diuji (testable), dan dikembangkan (extensible).
+
+- Fleksibilitas Tinggi (DIP & OCP)
+  Dengan bergantung pada abstraksi (CarService), Controller menjadi kebal terhadap perubahan di level bawah. 
+  Jika suatu saat algoritma penyimpanan data diubah (misalnya dari memori lokal ke database sungguhan), 
+  saya hanya perlu membuat kelas implementasi baru yang meng-implements CarService tanpa perlu mengutak-atik atau merusak baris kode di CarController.
+
+- Lokalisasi Bug & Keterbacaan (SRP): 
+  karena ProductController dan CarController sudah dipisah, file menjadi lebih ringkas. Jika terjadi bug khusus pada halaman Edit Car, 
+  saya tahu persis harus mencari di kelas CarController. Pencarian masalah menjadi sangat fokus dan tidak berisiko merusak logika fungsionalitas Produk.
+
+3) Explain the disadvantages of not applying SOLID principles to your project with examples.
+
+- Risiko Kerusakan Tidak Terduga (LSP Violation)
+  sebelumnya, CarController melakukan extends pada ProductController. Jika suatu saat developer lain menambahkan logika keamanan (security filter) 
+  atau mengubah rute default di ProductController, CarController akan ikut terdampak atau bahkan error karena ia mewarisi sifat yang tidak ia butuhkan secara paksa.
+
+- Keterikatan yang Kuat / Tightly Coupled (DIP Violation)
+  Saat CarController bergantung langsung pada CarServiceImpl (kelas konkret), Controller dan Service menjadi saling mengunci. Jika implementasi CarServiceImpl dihapus, diubah namanya, 
+  atau diganti parameter konstruktornya, Controller akan langsung error. Hal ini juga membuat kode sangat sulit untuk diuji (Unit Testing), karena kita tidak bisa menyisipkan mock object dengan mudah.
+
+------------------------------------------------------------------------------------------------------------------------------
 Modul 2 Refleksi:
 
 Selama pengerjaan latihan, beberapa masalah kualitas kode yang perlu saya perbaiki:
