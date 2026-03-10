@@ -1,5 +1,8 @@
 package id.ac.ui.cs.advprog.eshops.service;
 
+import id.ac.ui.cs.advprog.eshops.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshops.enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshops.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshops.model.Order;
 import id.ac.ui.cs.advprog.eshops.model.Payment;
 import id.ac.ui.cs.advprog.eshops.model.Product;
@@ -40,7 +43,7 @@ class PaymentServiceImplTest {
         product.setProductQuantity(1);
         products.add(product);
 
-        order = new Order("order-1", products, 1708560000L, "Author", "WAITING_PAYMENT");
+        order = new Order("order-1", products, 1708560000L, "Author", OrderStatus.WAITING_PAYMENT.getValue());
 
         paymentData = new HashMap<>();
         paymentData.put("bankName", "BCA");
@@ -49,43 +52,43 @@ class PaymentServiceImplTest {
 
     @Test
     void testAddPayment() {
-        Payment mockPayment = new Payment("pay-1", "BANK_TRANSFER", paymentData, order);
+        Payment mockPayment = new Payment("pay-1", PaymentMethod.BANK_TRANSFER.getValue(), paymentData, order);
         when(paymentRepository.save(any(Payment.class))).thenReturn(mockPayment);
 
-        Payment result = paymentService.addPayment(order, "BANK_TRANSFER", paymentData);
+        Payment result = paymentService.addPayment(order, PaymentMethod.BANK_TRANSFER.getValue(), paymentData);
 
         assertNotNull(result);
-        assertEquals("BANK_TRANSFER", result.getMethod());
+        assertEquals(PaymentMethod.BANK_TRANSFER.getValue(), result.getMethod());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
     @Test
     void testSetStatusSuccessChangesOrderStatus() {
-        Payment payment = new Payment("pay-1", "BANK_TRANSFER", paymentData, order);
+        Payment payment = new Payment("pay-1", PaymentMethod.BANK_TRANSFER.getValue(), paymentData, order);
         when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
 
-        Payment updatedPayment = paymentService.setStatus(payment, "SUCCESS");
+        Payment updatedPayment = paymentService.setStatus(payment, PaymentStatus.SUCCESS.getValue());
 
-        assertEquals("SUCCESS", updatedPayment.getStatus());
-        assertEquals("SUCCESS", updatedPayment.getOrder().getStatus());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), updatedPayment.getStatus());
+        assertEquals(OrderStatus.SUCCESS.getValue(), updatedPayment.getOrder().getStatus());
         verify(paymentRepository, times(1)).save(payment);
     }
 
     @Test
     void testSetStatusRejectedChangesOrderStatusToFailed() {
-        Payment payment = new Payment("pay-1", "BANK_TRANSFER", paymentData, order);
+        Payment payment = new Payment("pay-1", PaymentMethod.BANK_TRANSFER.getValue(), paymentData, order);
         when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
 
-        Payment updatedPayment = paymentService.setStatus(payment, "REJECTED");
+        Payment updatedPayment = paymentService.setStatus(payment, PaymentStatus.REJECTED.getValue());
 
-        assertEquals("REJECTED", updatedPayment.getStatus());
-        assertEquals("FAILED", updatedPayment.getOrder().getStatus());
+        assertEquals(PaymentStatus.REJECTED.getValue(), updatedPayment.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), updatedPayment.getOrder().getStatus());
         verify(paymentRepository, times(1)).save(payment);
     }
 
     @Test
     void testGetPayment() {
-        Payment payment = new Payment("pay-1", "BANK_TRANSFER", paymentData, order);
+        Payment payment = new Payment("pay-1", PaymentMethod.BANK_TRANSFER.getValue(), paymentData, order);
         when(paymentRepository.findById("pay-1")).thenReturn(payment);
 
         Payment result = paymentService.getPayment("pay-1");
@@ -96,7 +99,7 @@ class PaymentServiceImplTest {
     @Test
     void testGetAllPayments() {
         List<Payment> payments = new ArrayList<>();
-        payments.add(new Payment("pay-1", "BANK_TRANSFER", paymentData, order));
+        payments.add(new Payment("pay-1", PaymentMethod.BANK_TRANSFER.getValue(), paymentData, order));
         when(paymentRepository.findAll()).thenReturn(payments);
 
         List<Payment> result = paymentService.getAllPayments();
