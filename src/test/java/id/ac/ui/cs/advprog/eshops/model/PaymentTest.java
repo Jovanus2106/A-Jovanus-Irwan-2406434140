@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.eshops.model;
 
+import id.ac.ui.cs.advprog.eshops.enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshops.enums.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +25,7 @@ class PaymentTest {
         product.setProductQuantity(2);
         products.add(product);
 
-        dummyOrder = new Order("order-1", products, 1708560000L, "Safira Sudrajat", "WAITING_PAYMENT");
+        dummyOrder = new Order("order-1", products, 1708560000L, "Jovanus", "WAITING_PAYMENT");
     }
 
     @Test
@@ -31,10 +33,10 @@ class PaymentTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
 
-        Payment payment = new Payment("payment-1", "VOUCHER_CODE", paymentData, dummyOrder);
+        Payment payment = new Payment("payment-1", PaymentMethod.VOUCHER_CODE.getValue(), paymentData, dummyOrder);
 
-        assertEquals("SUCCESS", payment.getStatus());
-        assertEquals("VOUCHER_CODE", payment.getMethod());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
+        assertEquals(PaymentMethod.VOUCHER_CODE.getValue(), payment.getMethod());
         assertEquals(paymentData, payment.getPaymentData());
         assertEquals(dummyOrder, payment.getOrder());
     }
@@ -44,8 +46,8 @@ class PaymentTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP123");
 
-        Payment payment = new Payment("payment-2", "VOUCHER_CODE", paymentData, dummyOrder);
-        assertEquals("REJECTED", payment.getStatus());
+        Payment payment = new Payment("payment-2", PaymentMethod.VOUCHER_CODE.getValue(), paymentData, dummyOrder);
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
 
     @Test
@@ -53,8 +55,8 @@ class PaymentTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "DISC1234ABC56789");
 
-        Payment payment = new Payment("payment-3", "VOUCHER_CODE", paymentData, dummyOrder);
-        assertEquals("REJECTED", payment.getStatus());
+        Payment payment = new Payment("payment-3", PaymentMethod.VOUCHER_CODE.getValue(), paymentData, dummyOrder);
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
 
     @Test
@@ -62,8 +64,8 @@ class PaymentTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOPABCDEFGHXYZ");
 
-        Payment payment = new Payment("payment-4", "VOUCHER_CODE", paymentData, dummyOrder);
-        assertEquals("REJECTED", payment.getStatus());
+        Payment payment = new Payment("payment-4", PaymentMethod.VOUCHER_CODE.getValue(), paymentData, dummyOrder);
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
 
     @Test
@@ -72,8 +74,8 @@ class PaymentTest {
         paymentData.put("bankName", "BCA");
         paymentData.put("referenceCode", "REF12345");
 
-        Payment payment = new Payment("payment-5", "BANK_TRANSFER", paymentData, dummyOrder);
-        assertEquals("SUCCESS", payment.getStatus());
+        Payment payment = new Payment("payment-5", PaymentMethod.BANK_TRANSFER.getValue(), paymentData, dummyOrder);
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
     }
 
     @Test
@@ -82,8 +84,8 @@ class PaymentTest {
         paymentData.put("bankName", "");
         paymentData.put("referenceCode", "REF12345");
 
-        Payment payment = new Payment("payment-6", "BANK_TRANSFER", paymentData, dummyOrder);
-        assertEquals("REJECTED", payment.getStatus());
+        Payment payment = new Payment("payment-6", PaymentMethod.BANK_TRANSFER.getValue(), paymentData, dummyOrder);
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
 
     @Test
@@ -91,14 +93,14 @@ class PaymentTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("bankName", "BCA");
 
-        Payment payment = new Payment("payment-7", "BANK_TRANSFER", paymentData, dummyOrder);
-        assertEquals("REJECTED", payment.getStatus());
+        Payment payment = new Payment("payment-7", PaymentMethod.BANK_TRANSFER.getValue(), paymentData, dummyOrder);
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
 
     @Test
     void testCreatePaymentUnknownMethod() {
         Map<String, String> paymentData = new HashMap<>();
         Payment payment = new Payment("payment-8", "PAYPAL", paymentData, dummyOrder);
-        assertEquals("REJECTED", payment.getStatus());
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
 }
