@@ -16,7 +16,6 @@ class PaymentTest {
 
     @BeforeEach
     void setUp() {
-        // Buat Product dummy agar List tidak kosong
         List<Product> products = new ArrayList<>();
         Product product = new Product();
         product.setProductId("prod-1");
@@ -24,7 +23,6 @@ class PaymentTest {
         product.setProductQuantity(2);
         products.add(product);
 
-        // Buat Order menggunakan constructor yang ada di Order.java
         dummyOrder = new Order("order-1", products, 1708560000L, "Safira Sudrajat", "WAITING_PAYMENT");
     }
 
