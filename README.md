@@ -1,3 +1,34 @@
+Modul 4 Refleksi: 
+
+1. Refleksi berdasarkan pertanyaan evaluasi Percival (2017) mengenai alur TDD:
+
+Berdasarkan evaluasi Percival, alur TDD ini sangat berguna. Pendekatan Red-Green-Refactor memaksa saya memikirkan edge cases sejak awal dan memberikan 
+rasa aman bahwa logika kode tidak rusak saat melakukan refactoring (misal saat mengubah string menjadi Enum).
+
+Yang perlu diperbaiki ke depannya: Saya harus lebih teliti menyiapkan mock data atau dependensi tes pada fase Red. 
+Sebelumnya, asumsi setup tes yang kurang lengkap (seperti memasukkan list product kosong pada Order) sempat menyebabkan 
+NullPointerException. Ke depannya, saya akan memastikan struktur objek dipahami secara utuh sebelum mulai menulis unit test.
+
+2. Secara keseluruhan, unit test yang saya buat sudah cukup baik dalam mengikuti prinsip F.I.R.S.T, meskipun ada beberapa pelajaran penting yang saya dapatkan:
+
+-Fast (Cepat): Ya, unit test saya untuk Model, Repository, dan Service tidak bergantung pada database eksternal atau network, sehingga dapat dieksekusi dalam hitungan milidetik.
+
+-Independent (Mandiri): Awalnya ada sedikit kelemahan di sini. Namun, setelah direfaktor, saya menggunakan anotasi @BeforeEach untuk selalu membuat objek Order, Payment, dan 
+Product baru sebelum setiap fungsi tes dijalankan. Ini memastikan satu tes tidak akan memengaruhi state (kondisi) tes lainnya.
+
+-Repeatable (Dapat Diulang): Ya, tes saya memberikan hasil yang sama baik saat dijalankan di local environment (IntelliJ/Terminal) maupun nantinya saat dijalankan di CI/CD (pipeline otomatis).
+
+-Self-Validating (Memvalidasi Sendiri): Ya, saya secara ketat menggunakan fungsi assertEquals(), assertNull(), dan assertThrows() dari JUnit 5. Tes akan otomatis memberikan 
+status merah/hijau tanpa saya harus melakukan pengecekan log manual (print statement).
+
+-Timely (Tepat Waktu): Ya, sesuai dengan metode TDD, saya membuat kerangka pengujian terlebih dahulu (fase Red) sebelum mengimplementasikan fungsionalitas di PaymentController, PaymentServiceImpl, dan Model Payment (fase Green).
+
+Hal yang perlu saya lakukan ke depannya:
+Saya perlu lebih memperhatikan prinsip Independent dan Timely dalam hal menyiapkan Mocking. Ke depannya, saya akan memastikan bahwa dummy data yang saya buat pada tahapan awal pengujian tidak memiliki ketergantungan 
+tersembunyi dengan model lain agar tes benar-benar terisolasi dengan baik.
+
+
+-------------------------------------------------------------------------------------------------------------------
 Modul 3 Refleksi:
 Implementasi prinsip SOLID: 
 

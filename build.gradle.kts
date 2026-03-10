@@ -26,6 +26,8 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation ("org.springframework.boot:spring-boot-starter-test")
+    testImplementation ("io.github.bonigarcia:selenium-jupiter:5.1.1")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
@@ -40,7 +42,7 @@ tasks.withType<Test> {
 
 tasks.test {
     filter {
-        excludeTestsMatching("*FunctionalTest")
+        includeTestsMatching("*FunctionalTest")
     }
     finalizedBy(tasks.jacocoTestReport)
 }
@@ -52,7 +54,6 @@ tasks.jacocoTestReport {
         html.required.set(true)
     }
 }
-
 sonar {
     properties {
         property("sonar.projectKey", "Jovanus2106_A-Jovanus-Irwan-2406434140")
@@ -62,3 +63,11 @@ sonar {
     }
 }
 
+tasks.register<Test>("functionalTest") {
+    description = "Runs the functional tests."
+    group = "verification"
+    useJUnitPlatform()
+    filter {
+        includeTestsMatching("*FunctionalTest")
+    }
+}
