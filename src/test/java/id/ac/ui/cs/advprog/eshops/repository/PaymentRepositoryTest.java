@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.eshops.repository;
 
+import id.ac.ui.cs.advprog.eshops.enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshops.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshops.model.Order;
 import id.ac.ui.cs.advprog.eshops.model.Payment;
 import id.ac.ui.cs.advprog.eshops.model.Product;
@@ -29,7 +31,7 @@ class PaymentRepositoryTest {
         products.add(product);
 
         dummyOrder = new Order("order-1", products, 1708560000L, "Author");
-        payment = new Payment("pay-1", "BANK_TRANSFER", new HashMap<>(), dummyOrder);
+        payment = new Payment("pay-1", PaymentMethod.BANK_TRANSFER.getValue(), new HashMap<>(), dummyOrder);
     }
 
     @Test
@@ -46,10 +48,10 @@ class PaymentRepositoryTest {
     void testSaveUpdateExistingPayment() {
         paymentRepository.save(payment);
 
-        payment.setStatus("SUCCESS");
+        payment.setStatus(PaymentStatus.SUCCESS.getValue());
         Payment updatedPayment = paymentRepository.save(payment);
 
-        assertEquals("SUCCESS", updatedPayment.getStatus());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), updatedPayment.getStatus());
         assertEquals(1, paymentRepository.findAll().size());
     }
 
@@ -62,7 +64,7 @@ class PaymentRepositoryTest {
     @Test
     void testFindAll() {
         paymentRepository.save(payment);
-        Payment payment2 = new Payment("pay-2", "VOUCHER_CODE", new HashMap<>(), dummyOrder);
+        Payment payment2 = new Payment("pay-2", PaymentMethod.VOUCHER_CODE.getValue(), new HashMap<>(), dummyOrder);
         paymentRepository.save(payment2);
 
         List<Payment> payments = paymentRepository.findAll();
