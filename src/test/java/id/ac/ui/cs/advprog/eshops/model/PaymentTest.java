@@ -3,7 +3,9 @@ package id.ac.ui.cs.advprog.eshops.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +16,16 @@ class PaymentTest {
 
     @BeforeEach
     void setUp() {
-        dummyOrder = new Order("order-1", null, 0L, "WAITING_PAYMENT");
+        // Buat Product dummy agar List tidak kosong
+        List<Product> products = new ArrayList<>();
+        Product product = new Product();
+        product.setProductId("prod-1");
+        product.setProductName("Kecap");
+        product.setProductQuantity(2);
+        products.add(product);
+
+        // Buat Order menggunakan constructor yang ada di Order.java
+        dummyOrder = new Order("order-1", products, 1708560000L, "Safira Sudrajat", "WAITING_PAYMENT");
     }
 
     @Test
@@ -33,7 +44,7 @@ class PaymentTest {
     @Test
     void testCreatePaymentVoucherCodeRejected_LengthNot16() {
         Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("voucherCode", "ESHOP123"); // Kurang dari 16
+        paymentData.put("voucherCode", "ESHOP123");
 
         Payment payment = new Payment("payment-2", "VOUCHER_CODE", paymentData, dummyOrder);
         assertEquals("REJECTED", payment.getStatus());
@@ -51,7 +62,7 @@ class PaymentTest {
     @Test
     void testCreatePaymentVoucherCodeRejected_Not8Digits() {
         Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("voucherCode", "ESHOPABCDEFGHXYZ"); // Tidak ada 8 angka
+        paymentData.put("voucherCode", "ESHOPABCDEFGHXYZ");
 
         Payment payment = new Payment("payment-4", "VOUCHER_CODE", paymentData, dummyOrder);
         assertEquals("REJECTED", payment.getStatus());
@@ -81,7 +92,6 @@ class PaymentTest {
     void testCreatePaymentBankTransferRejected_NullReferenceCode() {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("bankName", "BCA");
-        // referenceCode tidak dimasukkan / null
 
         Payment payment = new Payment("payment-7", "BANK_TRANSFER", paymentData, dummyOrder);
         assertEquals("REJECTED", payment.getStatus());
